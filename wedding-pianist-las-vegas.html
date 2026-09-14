@@ -164,6 +164,45 @@
   .faq summary:hover{color:var(--gold-l)}
   .faq details p{color:var(--ivory-d);margin:0 0 22px;max-width:62ch;font-size:.99rem;line-height:1.75}
   @media(max-width:640px){.faq summary{font-size:1.15rem;padding-right:36px}}
+
+  /* enquiry-form */
+  .enq{max-width:760px;margin:34px auto 0;text-align:left}
+  .enq-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 22px}
+  .enq-row-full{grid-column:1/-1}
+  .enq label{display:block;font-family:Inter,system-ui,sans-serif;font-size:.7rem;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+  .enq label .req{color:var(--gold)}
+  .enq input,.enq select,.enq textarea{width:100%;box-sizing:border-box;background:transparent;
+    color:var(--ivory);border:1px solid var(--line);border-radius:2px;padding:12px 13px;
+    font-family:Inter,system-ui,sans-serif;font-size:.97rem;line-height:1.45;
+    transition:border-color .2s ease,box-shadow .2s ease}
+  .enq textarea{min-height:120px;resize:vertical}
+  .enq select{appearance:none;-webkit-appearance:none;cursor:pointer;
+    background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);
+    background-position:calc(100% - 19px) calc(1em + 3px),calc(100% - 14px) calc(1em + 3px);
+    background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:38px}
+  .enq select option{background:var(--char);color:var(--ivory)}
+  .enq input:focus,.enq select:focus,.enq textarea:focus{outline:none;border-color:var(--gold);
+    box-shadow:0 0 0 3px rgba(193,154,75,.16)}
+  .enq input:invalid:not(:placeholder-shown){border-color:#a8553f}
+  .enq-actions{margin-top:26px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  /* .btn was written for links; a form button needs the reset and the solid primary treatment */
+  .enq-actions button.btn{font-family:Inter,system-ui,sans-serif;background:var(--gold);
+    color:var(--char);border:1px solid var(--gold);border-radius:2px;cursor:pointer;
+    font-weight:600;line-height:1;transition:background .2s ease,color .2s ease}
+  .enq-actions button.btn:hover{background:var(--gold-l);color:var(--char)}
+  .enq-actions button.btn:focus-visible,.enq-alt:focus-visible{outline:2px solid var(--gold-l);outline-offset:3px}
+  .enq-note{font-family:Inter,system-ui,sans-serif;font-size:.83rem;line-height:1.6;
+    color:var(--muted);margin:14px 0 0;max-width:62ch}
+  .enq-alt{background:none;border:1px solid var(--line);color:var(--ivory-d);border-radius:2px;
+    padding:13px 22px;font-family:Inter,system-ui,sans-serif;font-size:.78rem;letter-spacing:.12em;
+    text-transform:uppercase;cursor:pointer;transition:border-color .2s ease,color .2s ease}
+  .enq-alt:hover{border-color:var(--gold);color:var(--gold-l)}
+  .enq-said{font-family:Inter,system-ui,sans-serif;font-size:.85rem;color:var(--gold-l);
+    margin:12px 0 0;min-height:1.2em}
+  .enq-direct{margin-top:40px;padding-top:28px;border-top:1px solid var(--line);text-align:center}
+  .enq-direct .eyebrow{display:block;margin-bottom:14px}
+  @media(max-width:640px){.enq-grid{grid-template-columns:1fr}.enq-actions .btn,.enq-alt{width:100%;text-align:center}}
 </style>
 <style>
   section[id],header[id]{scroll-margin-top:76px}
@@ -526,10 +565,54 @@
     <div class="rule" style="margin-left:auto;margin-right:auto"></div>
     <h2>Tell me about your wedding</h2>
     <p style="color:var(--ivory-d);max-width:56ch;margin:20px auto 26px">Send the date and the venue and I will come back to you with a programme suggestion and a quote. Wedding dates in Las Vegas fill early in the season — the sooner you write, the more I can prepare for you.</p>
-    <a href="mailto:masha.pisarenko@gmail.com?subject=Wedding%20piano%20enquiry">masha.pisarenko@gmail.com</a>
-    <a href="tel:+17028097576">702-809-7576</a>
-    <p style="margin-top:30px"><a class="btn" href="mailto:masha.pisarenko@gmail.com?subject=Wedding%20piano%20enquiry">Request a quote</a></p>
-    <p style="margin-top:26px;color:var(--muted)">Planning a corporate event or a private celebration? See <a href="/corporate-pianist-las-vegas.html">corporate &amp; conventions</a>, or <a href="/live-piano-las-vegas.html">live piano for Las Vegas events</a> for every other occasion.</p>
+          <form class="enq" id="enqForm" action="mailto:masha.pisarenko@gmail.com" method="post" enctype="text/plain">
+        <div class="enq-grid">
+          <div>
+            <label for="enqName">Your name <span class="req">*</span></label>
+            <input id="enqName" name="name" type="text" autocomplete="name" required placeholder="&nbsp;">
+          </div>
+          <div>
+            <label for="enqEmail">Email <span class="req">*</span></label>
+            <input id="enqEmail" name="email" type="email" autocomplete="email" required placeholder="&nbsp;">
+          </div>
+          <div>
+            <label for="enqPhone">Phone</label>
+            <input id="enqPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="&nbsp;">
+          </div>
+          <div>
+            <label for="enqDate">Date of the event</label>
+            <input id="enqDate" name="date" type="date">
+          </div>
+          <div>
+            <label for="enqOccasion">The occasion</label>
+            <select id="enqOccasion" name="occasion" required><option>Wedding ceremony</option><option>Wedding cocktail hour or reception</option><option>Corporate reception or client dinner</option><option>Convention, trade show or hospitality suite</option><option>Gala or fundraiser</option><option>Private party or birthday</option><option>Memorial</option><option>Something else</option></select>
+          </div>
+          <div>
+            <label for="enqLength">How long you would like music</label>
+            <select id="enqLength" name="length"><option>2 hours (the minimum booking)</option><option>3 hours</option><option>4 hours</option><option>More than 4 hours</option><option>Not sure yet — please advise</option></select>
+          </div>
+          <div class="enq-row-full">
+            <label for="enqVenue">Venue &mdash; and is there a piano in the room?</label>
+            <input id="enqVenue" name="venue" type="text" placeholder="&nbsp;">
+          </div>
+          <div class="enq-row-full">
+            <label for="enqMessage">Anything else, and any piece you would like played</label>
+            <textarea id="enqMessage" name="message" placeholder="&nbsp;"></textarea>
+          </div>
+        </div>
+        <div class="enq-actions">
+          <button class="btn" type="submit">Send the enquiry</button>
+          <button class="enq-alt" type="button" id="enqCopy">Copy the details instead</button>
+        </div>
+        <p class="enq-said" id="enqSaid" role="status" aria-live="polite"></p>
+        <p class="enq-note">Sending opens your own email app with every answer already written in, addressed to me &mdash; nothing is submitted to any third party, and no data leaves your device until you press send there. If your computer has no email app set up, use <b>Copy the details instead</b> and paste them into webmail, or simply call.</p>
+      </form>
+      <div class="enq-direct">
+        <span class="eyebrow">Or reach me directly</span>
+        <a href="mailto:masha.pisarenko@gmail.com?subject=Event%20piano%20enquiry">masha.pisarenko@gmail.com</a>
+        <a href="tel:+17028097576">702-809-7576</a>
+      </div>
+  
   </div>
 </section>
 
@@ -548,6 +631,52 @@
     }, { threshold: 0.12 });
     els.forEach(function (el) { io.observe(el); });
   } else { els.forEach(function (el) { el.classList.add("in"); }); }
+</script>
+
+<script>
+(function () {
+  var f = document.getElementById("enqForm");
+  if (!f) return;
+  var said = document.getElementById("enqSaid");
+  function val(id) { var el = document.getElementById(id); return el ? el.value.trim() : ""; }
+  function compose() {
+    var L = [];
+    L.push("Name: " + val("enqName"));
+    L.push("Email: " + val("enqEmail"));
+    if (val("enqPhone")) L.push("Phone: " + val("enqPhone"));
+    if (val("enqDate")) L.push("Date of the event: " + val("enqDate"));
+    L.push("Occasion: " + val("enqOccasion"));
+    L.push("Length of music: " + val("enqLength"));
+    if (val("enqVenue")) L.push("Venue / piano in the room: " + val("enqVenue"));
+    if (val("enqMessage")) L.push("", "Notes:", val("enqMessage"));
+    L.push("", "Sent from " + location.origin + location.pathname);
+    return L.join("\n");
+  }
+  f.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!f.checkValidity()) { f.reportValidity(); return; }
+    var subj = "Event piano enquiry \u2014 " + (val("enqDate") || val("enqOccasion"));
+    var href = "mailto:masha.pisarenko@gmail.com?subject=" + encodeURIComponent(subj) +
+               "&body=" + encodeURIComponent(compose());
+    said.textContent = "Opening your email app\u2026 if nothing happens, use \u201cCopy the details instead\u201d.";
+    window.location.href = href;
+  });
+  document.getElementById("enqCopy").addEventListener("click", function () {
+    var text = compose();
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly", "");
+      ta.style.position = "fixed"; ta.style.left = "-9999px";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); } catch (err) {}
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(fallback);
+    } else { fallback(); }
+    said.textContent = "Copied. Paste it into an email to masha.pisarenko@gmail.com \u2014 or call " + "702-809-7576" + ".";
+  });
+})();
 </script>
 </body>
 </html>
