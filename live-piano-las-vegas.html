@@ -208,6 +208,7 @@
     padding:13px 22px;font-family:Inter,system-ui,sans-serif;font-size:.78rem;letter-spacing:.12em;
     text-transform:uppercase;cursor:pointer;transition:border-color .2s ease,color .2s ease}
   .enq-alt:hover{border-color:var(--gold);color:var(--gold-l)}
+  a.enq-alt{display:inline-block;text-decoration:none;line-height:1}
   .enq-said{font-family:Inter,system-ui,sans-serif;font-size:.85rem;color:var(--gold-l);
     margin:12px 0 0;min-height:1.2em}
   .enq-direct{margin-top:40px;padding-top:28px;border-top:1px solid var(--line);text-align:center}
@@ -351,6 +352,8 @@
   ]
 }
 </script>
+
+<style>.foot-contact{margin-top:10px}.foot-contact a{color:var(--gold-l);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s ease}.foot-contact a:hover{border-bottom-color:var(--gold)}</style>
 </head>
 <body>
 
@@ -630,6 +633,10 @@
             <label for="enqLength">How long you would like music</label>
             <select id="enqLength" name="length"><option>2 hours (the minimum booking)</option><option>3 hours</option><option>4 hours</option><option>More than 4 hours</option><option>Not sure yet — please advise</option></select>
           </div>
+          <div>
+            <label for="enqHeard">How did you hear about me?</label>
+            <select id="enqHeard" name="heard"><option value="" selected disabled>Please choose&hellip;</option><option>Google search</option><option>Google Maps or my Business Profile</option><option>A venue, hotel or wedding planner</option><option>Someone recommended me</option><option>GigSalad, The Bash or another directory</option><option>YouTube</option><option>Facebook or Instagram</option><option>Heard me play somewhere</option><option>Something else</option></select>
+          </div>
           <div class="enq-row-full">
             <label for="enqVenue">Venue &mdash; and is there a piano in the room?</label>
             <input id="enqVenue" name="venue" type="text" placeholder="&nbsp;">
@@ -642,14 +649,16 @@
         <div class="enq-actions">
           <button class="btn" type="submit">Send the enquiry</button>
           <button class="enq-alt" type="button" id="enqCopy">Copy the details instead</button>
+          <a class="enq-alt" href="https://wa.me/17028097576?text=Hello%20Dr.%20Pisarenko%2C%20I%20would%20like%20to%20ask%20about%20live%20piano%20for%20an%20event%20in%20Las%20Vegas." target="_blank" rel="noopener">Message me on WhatsApp</a>
         </div>
         <p class="enq-said" id="enqSaid" role="status" aria-live="polite"></p>
-        <p class="enq-note">Sending opens your own email app with every answer already written in, addressed to me &mdash; nothing is submitted to any third party, and no data leaves your device until you press send there. If your computer has no email app set up, use <b>Copy the details instead</b> and paste them into webmail, or simply call.</p>
+        <p class="enq-note">Sending opens your own email app with every answer already written in, addressed to me &mdash; nothing is submitted to any third party, and no data leaves your device until you press send there. If your computer has no email app set up, use <b>Copy the details instead</b> and paste them into webmail, or write to me on <b>WhatsApp</b>, or simply call.</p>
       </form>
       <div class="enq-direct">
         <span class="eyebrow">Or reach me directly</span>
         <a href="mailto:masha.pisarenko@gmail.com?subject=Event%20piano%20enquiry">masha.pisarenko@gmail.com</a>
         <a href="tel:+17028097576">702-809-7576</a>
+        <a href="https://wa.me/17028097576?text=Hello%20Dr.%20Pisarenko%2C%20I%20would%20like%20to%20ask%20about%20live%20piano%20for%20an%20event%20in%20Las%20Vegas." target="_blank" rel="noopener">WhatsApp &mdash; 702-809-7576</a>
       </div>
   
   </div>
@@ -659,7 +668,9 @@
   <div class="wrap">
     <p>© Dr. Maria Pisarenko · Concert Pianist, DMA · Las Vegas, Nevada</p>
     <p><a href="/">mariapisarenko.com</a> &nbsp;·&nbsp; <a href="/wedding-pianist-las-vegas.html">Weddings</a> &nbsp;·&nbsp; <a href="/corporate-pianist-las-vegas.html">Corporate &amp; conventions</a> &nbsp;·&nbsp; <a href="https://onlinepianouniversity.com">Online Piano University</a> &nbsp;·&nbsp; <a href="https://www.youtube.com/@ONLINEPIANOUNIVERSITY">YouTube</a></p>
-  </div>
+  
+      <p class="foot-contact"><a href="mailto:masha.pisarenko@gmail.com?subject=Event%20piano%20enquiry">masha.pisarenko@gmail.com</a>&nbsp;&middot;&nbsp;<a href="tel:+17028097576">702-809-7576</a>&nbsp;&middot;&nbsp;<a href="https://wa.me/17028097576?text=Hello%20Dr.%20Pisarenko%2C%20I%20would%20like%20to%20ask%20about%20live%20piano%20for%20an%20event%20in%20Las%20Vegas." target="_blank" rel="noopener">WhatsApp</a>&nbsp;&middot;&nbsp;Las Vegas, Nevada</p>
+    </div>
 </footer>
 
 <script>
@@ -686,6 +697,7 @@
     if (val("enqDate")) L.push("Date of the event: " + val("enqDate"));
     L.push("Occasion: " + val("enqOccasion"));
     L.push("Length of music: " + val("enqLength"));
+    if (val("enqHeard")) L.push("How they heard: " + val("enqHeard"));
     if (val("enqVenue")) L.push("Venue / piano in the room: " + val("enqVenue"));
     if (val("enqMessage")) L.push("", "Notes:", val("enqMessage"));
     L.push("", "Sent from " + location.origin + location.pathname);

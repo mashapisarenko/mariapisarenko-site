@@ -128,6 +128,45 @@
   .reveal.in{opacity:1;transform:none}
   @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 </style>
+
+<style>
+  /* enquiry form -- same component as the event pages */
+  .enq{max-width:700px;margin:34px auto 0;text-align:left}
+  .enq-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 22px}
+  .enq-row-full{grid-column:1/-1}
+  .enq label{display:block;font-family:Inter,system-ui,sans-serif;font-size:.7rem;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+  .enq input,.enq select,.enq textarea{width:100%;box-sizing:border-box;background:transparent;
+    color:var(--ivory);border:1px solid var(--line);border-radius:2px;padding:12px 13px;
+    font-family:Inter,system-ui,sans-serif;font-size:.97rem;line-height:1.45;
+    transition:border-color .2s ease,box-shadow .2s ease}
+  .enq textarea{min-height:110px;resize:vertical}
+  .enq select{appearance:none;-webkit-appearance:none;cursor:pointer;
+    background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);
+    background-position:calc(100% - 19px) calc(1em + 3px),calc(100% - 14px) calc(1em + 3px);
+    background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:38px}
+  .enq select option{background:var(--char);color:var(--ivory)}
+  .enq input:focus,.enq select:focus,.enq textarea:focus{outline:none;border-color:var(--gold);
+    box-shadow:0 0 0 3px rgba(193,154,75,.16)}
+  .enq-actions{margin-top:26px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .enq-actions button.btn{font-family:Inter,system-ui,sans-serif;background:var(--gold);
+    color:var(--char);border:1px solid var(--gold);border-radius:2px;cursor:pointer;
+    font-weight:600;line-height:1;padding:13px 30px;letter-spacing:.14em;text-transform:uppercase;
+    font-size:.72rem;transition:background .2s ease,color .2s ease}
+  .enq-actions button.btn:hover{background:var(--gold-l);color:var(--char)}
+  .enq-alt{background:none;border:1px solid var(--line);color:var(--ivory-d);border-radius:2px;
+    padding:13px 22px;font-family:Inter,system-ui,sans-serif;font-size:.78rem;letter-spacing:.12em;
+    text-transform:uppercase;cursor:pointer;transition:border-color .2s ease,color .2s ease}
+  .enq-alt:hover{border-color:var(--gold);color:var(--gold-l)}
+  a.enq-alt{display:inline-block;text-decoration:none;line-height:1}
+  .enq-said{font-family:Inter,system-ui,sans-serif;font-size:.85rem;color:var(--gold-l);
+    margin:12px 0 0;min-height:1.2em}
+  .enq-note{font-family:Inter,system-ui,sans-serif;font-size:.83rem;line-height:1.6;
+    color:var(--muted);margin:14px 0 0;max-width:62ch}
+  @media(max-width:640px){.enq-grid{grid-template-columns:1fr}.enq-actions button.btn,.enq-alt{width:100%;text-align:center}}
+</style>
+
+<style>.foot-contact{margin-top:10px}.foot-contact a{color:var(--gold-l);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s ease}.foot-contact a:hover{border-bottom-color:var(--gold)}</style>
 </head>
 <body>
 
@@ -277,7 +316,48 @@
       <span class="eyebrow">Hiring me for an event in Las Vegas</span>
       <p style="margin-top:14px"><a class="email" href="mailto:masha.pisarenko@gmail.com?subject=Event%20piano%20enquiry">masha.pisarenko@gmail.com</a></p>
       <p style="margin-top:8px"><a class="email" href="tel:+17028097576">702-809-7576</a></p>
-      <p style="margin-top:20px"><a class="btn" href="/live-piano-las-vegas.html#contact">Request a quote</a></p>
+      <p style="margin-top:8px"><a class="email" href="https://wa.me/17028097576?text=Hello%20Dr.%20Pisarenko%2C%20I%20would%20like%20to%20ask%20about%20live%20piano%20for%20an%20event%20in%20Las%20Vegas." target="_blank" rel="noopener">WhatsApp &mdash; 702-809-7576</a></p>
+      <p style="margin-top:20px"><a class="btn" href="/live-piano-las-vegas.html">Full details, programmes &amp; terms</a></p>
+      <form class="enq" id="enqForm" novalidate>
+        <div class="enq-grid">
+          <div>
+            <label for="enqName">Your name *</label>
+            <input id="enqName" name="name" type="text" required placeholder="&nbsp;">
+          </div>
+          <div>
+            <label for="enqEmail">Email *</label>
+            <input id="enqEmail" name="email" type="email" required placeholder="&nbsp;">
+          </div>
+          <div>
+            <label for="enqPhone">Phone</label>
+            <input id="enqPhone" name="phone" type="tel" placeholder="&nbsp;">
+          </div>
+          <div>
+            <label for="enqDate">Date, if you have one</label>
+            <input id="enqDate" name="date" type="date">
+          </div>
+          <div>
+            <label for="enqAbout">What is this about? *</label>
+            <select id="enqAbout" name="about" required><option value="" selected disabled>Please choose&hellip;</option><option>Hiring me to play at an event</option><option>A wedding</option><option>A corporate event or convention</option><option>A concert or collaboration</option><option>Press or an interview</option><option>Piano lessons</option><option>Something else</option></select>
+          </div>
+          <div>
+            <label for="enqHeard">How did you hear about me?</label>
+            <select id="enqHeard" name="heard"><option value="" selected disabled>Please choose&hellip;</option><option>Google search</option><option>Google Maps or my Business Profile</option><option>A venue, hotel or wedding planner</option><option>Someone recommended me</option><option>GigSalad, The Bash or another directory</option><option>YouTube</option><option>Facebook or Instagram</option><option>Heard me play somewhere</option><option>Something else</option></select>
+          </div>
+          <div class="enq-row-full">
+            <label for="enqMessage">Anything you would like me to know</label>
+            <textarea id="enqMessage" name="message" placeholder="&nbsp;"></textarea>
+          </div>
+        </div>
+        <div class="enq-actions">
+          <button class="btn" type="submit">Send</button>
+          <button class="enq-alt" type="button" id="enqCopy">Copy the details instead</button>
+          <a class="enq-alt" href="https://wa.me/17028097576?text=Hello%20Dr.%20Pisarenko%2C%20I%20would%20like%20to%20ask%20about%20live%20piano%20for%20an%20event%20in%20Las%20Vegas." target="_blank" rel="noopener">Message me on WhatsApp</a>
+        </div>
+        <p class="enq-said" id="enqSaid" role="status" aria-live="polite"></p>
+        <p class="enq-note">Sending opens your own email app with every answer already written in, addressed to me &mdash; nothing is submitted to any third party, and no data leaves your device until you press send there. If your computer has no email app set up, use <b>Copy the details instead</b>, or write to me on <b>WhatsApp</b>, or simply call.</p>
+      </form>
+
     </div>
 </div>
 </section>
@@ -286,7 +366,9 @@
   <div class="wrap">
     <p>© Dr. Maria Pisarenko · Concert Pianist, DMA</p>
     <p><a href="/live-piano-las-vegas.html">Live piano for events</a> &nbsp;·&nbsp; <a href="/wedding-pianist-las-vegas.html">Weddings</a> &nbsp;·&nbsp; <a href="https://onlinepianouniversity.com">Online Piano University</a> &nbsp;·&nbsp; <a href="https://www.lasvegaspianoschool.com">Las Vegas Piano School</a> &nbsp;·&nbsp; <a href="https://www.youtube.com/@ONLINEPIANOUNIVERSITY">YouTube</a></p>
-  </div>
+  
+      <p class="foot-contact"><a href="mailto:masha.pisarenko@gmail.com?subject=Event%20piano%20enquiry">masha.pisarenko@gmail.com</a>&nbsp;&middot;&nbsp;<a href="tel:+17028097576">702-809-7576</a>&nbsp;&middot;&nbsp;<a href="https://wa.me/17028097576?text=Hello%20Dr.%20Pisarenko%2C%20I%20would%20like%20to%20ask%20about%20live%20piano%20for%20an%20event%20in%20Las%20Vegas." target="_blank" rel="noopener">WhatsApp</a>&nbsp;&middot;&nbsp;Las Vegas, Nevada</p>
+    </div>
 </footer>
 
 <script>
@@ -297,6 +379,51 @@
     }, { threshold: 0.12 });
     els.forEach(function (el) { io.observe(el); });
   } else { els.forEach(function (el) { el.classList.add("in"); }); }
+</script>
+
+<script>
+(function () {
+  var f = document.getElementById("enqForm");
+  if (!f) return;
+  var said = document.getElementById("enqSaid");
+  function val(id) { var el = document.getElementById(id); return el ? el.value.trim() : ""; }
+  function compose() {
+    var L = [];
+    L.push("Name: " + val("enqName"));
+    L.push("Email: " + val("enqEmail"));
+    if (val("enqPhone")) L.push("Phone: " + val("enqPhone"));
+    if (val("enqDate")) L.push("Date: " + val("enqDate"));
+    L.push("About: " + val("enqAbout"));
+    if (val("enqHeard")) L.push("How they heard: " + val("enqHeard"));
+    if (val("enqMessage")) L.push("", "Notes:", val("enqMessage"));
+    L.push("", "Sent from " + location.origin + location.pathname);
+    return L.join("\n");
+  }
+  f.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!f.checkValidity()) { f.reportValidity(); return; }
+    var subj = "Enquiry from mariapisarenko.com \u2014 " + (val("enqAbout") || val("enqName"));
+    var href = "mailto:masha.pisarenko@gmail.com?subject=" + encodeURIComponent(subj) +
+               "&body=" + encodeURIComponent(compose());
+    said.textContent = "Opening your email app\u2026 if nothing happens, use \u201cCopy the details instead\u201d.";
+    window.location.href = href;
+  });
+  document.getElementById("enqCopy").addEventListener("click", function () {
+    var text = compose();
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly", "");
+      ta.style.position = "fixed"; ta.style.left = "-9999px";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); } catch (err) {}
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(fallback);
+    } else { fallback(); }
+    said.textContent = "Copied. Paste it into an email to masha.pisarenko@gmail.com \u2014 or call 702-809-7576.";
+  });
+})();
 </script>
 </body>
 </html>
