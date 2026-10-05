@@ -60,9 +60,30 @@
   .nav-in{display:flex;justify-content:space-between;align-items:center;height:62px}
   .logo{font-family:"Cormorant Garamond",serif;font-size:1.2rem;letter-spacing:.12em;color:var(--ivory)}
   .logo span{color:var(--gold)}
-  .nav-links{display:flex;gap:26px;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase}
-  .nav-links a{color:var(--ivory-d)}
-  @media(max-width:760px){.nav-links{display:none}}
+/* nav-top v2 (2026-10-05): menu always visible, every page listed */
+  .nav-in{gap:36px}
+  .nav-links{display:flex;align-items:center;gap:19px;font-size:.76rem;letter-spacing:.13em;text-transform:uppercase}
+  .nav-links a{color:var(--ivory);padding:5px 0;border-bottom:1px solid transparent}
+  .nav-links a:hover,.nav-links a:focus-visible{color:var(--gold-l)}
+  .nav-links a[aria-current="page"]{color:var(--gold-l);border-bottom-color:var(--gold)}
+  .nav-links a.nav-cta{border:1px solid var(--gold);color:var(--gold-l);padding:6px 14px}
+  .nav-links a.nav-cta:hover{background:var(--gold);color:var(--char)}
+  body section[id],body header[id]{scroll-margin-top:76px}
+  @media(max-width:1180px){
+    .nav-in{flex-direction:column;justify-content:center;height:auto;padding-top:9px;padding-bottom:7px;gap:4px}
+    .nav-links{flex-wrap:wrap;justify-content:center;gap:2px 18px;font-size:.72rem;letter-spacing:.12em}
+    .nav-links a.nav-cta{padding:3px 10px}
+    body .hero{padding-top:96px}
+    body .lv-hero{padding-top:160px}
+    body section[id],body header[id]{scroll-margin-top:104px}
+  }
+  @media(max-width:560px){
+    .logo{font-size:1.05rem}
+    .nav-links{gap:0 13px;font-size:.66rem;letter-spacing:.07em}
+    body .hero{padding-top:118px}
+    body .lv-hero{padding-top:170px}
+    body section[id],body header[id]{scroll-margin-top:126px}
+  }
 
   /* hero */
   .hero{min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:0;padding:62px 0 0}
@@ -209,8 +230,10 @@
       <a href="#performances">Performances</a>
       <a href="#press">Press</a>
       <a href="/live-piano-las-vegas.html">Events</a>
+      <a href="/wedding-pianist-las-vegas.html">Weddings</a>
+      <a href="/corporate-pianist-las-vegas.html">Corporate</a>
       <a href="#teaching">Teaching</a>
-      <a href="#contact">Contact</a>
+      <a class="nav-cta" href="#contact">Contact</a>
     </div>
   </div>
 </nav>
