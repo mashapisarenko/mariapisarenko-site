@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://mariapisarenko.com/</loc>
-    <lastmod>2026-09-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url><loc>https://mariapisarenko.com/live-piano-las-vegas.html</loc><lastmod>2026-09-30</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://mariapisarenko.com/corporate-pianist-las-vegas.html</loc><lastmod>2026-09-30</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://mariapisarenko.com/wedding-pianist-las-vegas.html</loc><lastmod>2026-09-30</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mariapisarenko.com/</loc><lastmod>2026-10-06</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://mariapisarenko.com/live-piano-las-vegas.html</loc><lastmod>2026-10-06</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mariapisarenko.com/wedding-pianist-las-vegas.html</loc><lastmod>2026-10-06</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mariapisarenko.com/corporate-pianist-las-vegas.html</loc><lastmod>2026-10-06</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mariapisarenko.com/classical-piano-repertoire.html</loc><lastmod>2026-10-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mariapisarenko.com/piano-coaching-las-vegas.html</loc><lastmod>2026-10-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>
