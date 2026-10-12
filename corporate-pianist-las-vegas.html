@@ -523,7 +523,7 @@
         <button class="enq-alt" type="button" id="qkCopy">Copy the details instead</button>
       </div>
       <p class="qk-said" id="qkSaid" role="status" aria-live="polite"></p>
-      <p class="qk-note">Sending opens your own email app with the details already written in. Prefer more detail? <a href="#contact">The full enquiry form is at the end of the page.</a></p>
+      <p class="qk-note">Your message comes straight to my inbox, delivered by Web3Forms. Prefer more detail? <a href="#contact">The full enquiry form is at the end of the page.</a></p>
     </form>
   </div>
 <script>
@@ -543,8 +543,27 @@
     e.preventDefault();
     if (!f.checkValidity()) { f.reportValidity(); return; }
     var subj = f.getAttribute("data-subject") + (v("qkDate") ? " \u2014 " + v("qkDate") : "");
-    said.textContent = "Opening your email app\u2026 if nothing happens, use \u201cCopy the details instead\u201d, or call 702-809-7576.";
-    window.location.href = "mailto:masha.pisarenko@gmail.com?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(compose());
+    var btn = f.querySelector('button[type="submit"]');
+    var body = compose();
+    function viaEmailApp(msg) {
+      said.textContent = msg;
+      window.location.href = "mailto:masha.pisarenko@gmail.com?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(body);
+    }
+    if (!window.fetch) { viaEmailApp("Opening your email app\u2026 if nothing happens, use \u201cCopy the details instead\u201d."); return; }
+    if (btn) btn.disabled = true;
+    said.textContent = "Sending\u2026";
+    fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({ access_key: "de3a8c87-0757-4cae-97a6-6beab0fd1cfc", subject: subj, from_name: "mariapisarenko.com",
+        replyto: v("qkEmail"), name: v("qkName"), email: v("qkEmail"), phone: v("qkPhone"), message: body })
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      if (d && (d.success === true || d.success === "true")) {
+        f.reset(); said.textContent = "Thank you \u2014 your message has reached me. I will reply to you personally.";
+      } else { throw new Error("not delivered"); }
+    }).catch(function () {
+      viaEmailApp("The form could not send just now \u2014 opening your email app with everything filled in instead. You can also call or WhatsApp 702-809-7576.");
+    }).then(function () { if (btn) btn.disabled = false; });
   });
   document.getElementById("qkCopy").addEventListener("click", function () {
     var text = compose();
@@ -888,7 +907,7 @@
           <a class="enq-alt" href="https://wa.me/17028097576?text=Hello%20Dr.%20Pisarenko%2C%20I%20would%20like%20to%20ask%20about%20live%20piano%20for%20an%20event%20in%20Las%20Vegas." target="_blank" rel="noopener">Message me on WhatsApp</a>
         </div>
         <p class="enq-said" id="enqSaid" role="status" aria-live="polite"></p>
-        <p class="enq-note">Sending opens your own email app with every answer already written in, addressed to me &mdash; nothing is submitted to any third party, and no data leaves your device until you press send there. If your computer has no email app set up, use <b>Copy the details instead</b> and paste them into webmail, or write to me on <b>WhatsApp</b>, or simply call.</p>
+        <p class="enq-note">Your enquiry comes straight to my inbox. It is delivered by Web3Forms, a form-delivery service, and is used for nothing but my reply. If you would rather, use <b>Copy the details instead</b> and send them from your own email, write to me on <b>WhatsApp</b>, or simply call.</p>
       </form>
       <div class="enq-direct">
         <span class="eyebrow">Or reach me directly</span>
@@ -946,10 +965,37 @@
     e.preventDefault();
     if (!f.checkValidity()) { f.reportValidity(); return; }
     var subj = "Event piano enquiry \u2014 " + (val("enqDate") || val("enqOccasion"));
-    var href = "mailto:masha.pisarenko@gmail.com?subject=" + encodeURIComponent(subj) +
-               "&body=" + encodeURIComponent(compose());
-    said.textContent = "Opening your email app\u2026 if nothing happens, use \u201cCopy the details instead\u201d.";
-    window.location.href = href;
+    var btn = f.querySelector('button[type="submit"]');
+    var body = compose();
+    function viaEmailApp(msg) {
+      said.textContent = msg;
+      window.location.href = "mailto:masha.pisarenko@gmail.com?subject=" + encodeURIComponent(subj) +
+                             "&body=" + encodeURIComponent(body);
+    }
+    if (!window.fetch) { viaEmailApp("Opening your email app\u2026 if nothing happens, use \u201cCopy the details instead\u201d."); return; }
+    if (btn) btn.disabled = true;
+    said.textContent = "Sending\u2026";
+    fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+        access_key: "de3a8c87-0757-4cae-97a6-6beab0fd1cfc",
+        subject: subj,
+        from_name: "mariapisarenko.com",
+        replyto: val("enqEmail"),
+        name: val("enqName"),
+        email: val("enqEmail"),
+        phone: val("enqPhone"),
+        message: body
+      })
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      if (d && (d.success === true || d.success === "true")) {
+        f.reset();
+        said.textContent = "Thank you \u2014 your enquiry has reached me. I will reply to you personally.";
+      } else { throw new Error("not delivered"); }
+    }).catch(function () {
+      viaEmailApp("The form could not send just now \u2014 opening your email app with everything filled in instead. You can also call or WhatsApp 702-809-7576.");
+    }).then(function () { if (btn) btn.disabled = false; });
   });
   document.getElementById("enqCopy").addEventListener("click", function () {
     var text = compose();
