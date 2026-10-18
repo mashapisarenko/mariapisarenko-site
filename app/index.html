@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head>
-<!-- Snapshot of the app artifact 5quDcXVWtZKtBNXpTerFAg (version 1792089363-4f6c), placed on mariapisarenko.com/app/ by the book's Claude on 2026-10-15 so the book's QR chain works. The app's Claude owns this folder and refreshes it. -->
+<!-- Snapshot of the app artifact 5quDcXVWtZKtBNXpTerFAg (version 1792257825-ad57, app version 19; her four own pieces on pp. 45, 46, 52, 53 removed from this public copy until her copyright filing), placed on mariapisarenko.com/app/ by the book's Claude on 2026-10-17 so the book's QR chain works for pages 3-53. The app's Claude owns this folder and refreshes it. -->
 <link rel="canonical" href="https://mariapisarenko.com/app/"><meta name="description" content="Free note-reading practice by Dr. Maria Pisarenko, the companion to her piano method for adult beginners."><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -677,10 +677,10 @@ button.step .stars{display:block;margin-top:4px;font-size:15px;letter-spacing:.1
     svg.setAttribute("viewBox","0 0 "+W+" "+H);svg.setAttribute("role","img");svg.setAttribute("aria-label",spec.aria||"Music staff");
     var X0=14,stv=grand?[{t:"treble",top:44},{t:"bass",top:150}]:[{t:spec.clef==="bass"?"bass":"treble",top:50}];
     stv.forEach(function(s){s.bottom=s.top+4*g;s.base=dia(s.t==="treble"?"E4":"G2");});
-    var ks=spec.ks||null,ksw=(ks&&!grand)?ks.n*g*0.9+20:0;var xs=X0+(grand?80:70)+ksw,xe=W-18;
+    var ks=spec.ks||null,ksw=(ks&&!grand)?ks.n*g*0.9+20:0;var xs=X0+(grand?80:(spec.clef==="none"?24:70))+ksw+(spec.ts?34:0),xe=W-18;
     stv.forEach(function(s){
       for(var i=0;i<5;i++){var y=s.top+i*g;el(svg,"line",{x1:X0,x2:W-10,y1:y,y2:y,class:"s-line2"});}
-      if(s.t==="treble")el(svg,"text",{x:X0+(grand?10:4),y:s.bottom,"font-size":g*4.5,class:"clef"},"𝄞");
+      if(spec.clef==="none"){}else if(s.t==="treble")el(svg,"text",{x:X0+(grand?10:4),y:s.bottom,"font-size":g*4.5,class:"clef"},"𝄞");
       else el(svg,"text",{x:X0+(grand?10:4),y:s.top+g*3.2,"font-size":g*3.7,class:"clef"},"𝄢");
     });
     if(ks&&!grand&&stv[0].t==="treble"){
@@ -692,10 +692,13 @@ button.step .stars{display:block;margin-top:4px;font-size:15px;letter-spacing:.1
       el(svg,"line",{x1:bx,x2:bx,y1:T,y2:B,class:"s-line2"});
       el(svg,"path",{d:"M"+bx+","+T+" C"+(bx-13)+","+(T+28)+" "+(bx-2)+","+(M-22)+" "+(bx-9)+","+M+" C"+(bx-2)+","+(M+22)+" "+(bx-13)+","+(B-28)+" "+bx+","+B,class:"brace"});
     }
+    if(spec.ts&&!grand){var tx=xs-22;el(svg,"text",{x:tx,y:stv[0].top+2*g-3,"font-size":g*2.1,class:"tsig"},String(spec.ts[0]));el(svg,"text",{x:tx,y:stv[0].bottom-3,"font-size":g*2.1,class:"tsig"},String(spec.ts[1]));}
     if(spec.bar){el(svg,"line",{x1:W-12,x2:W-12,y1:stv[0].top,y2:stv[stv.length-1].bottom,stroke:"var(--staffink)","stroke-width":3.5});}
     var items=spec.items||[],n=items.length;
     items.forEach(function(it,i){
       var cx=xs+(i+0.5)*(xe-xs)/Math.max(n,1);
+      if(it.barline){el(svg,"line",{x1:cx,x2:cx,y1:stv[0].top,y2:stv[0].bottom,class:"s-line2"});return;}
+      if(it.rest){restGlyph(svg,it.rest,cx,it.rest==="wr"?stv[0].top+g:stv[0].top+2*g,null);return;}
       var list=(it.notes||[]).map(function(o){
         if(typeof o==="string")o={n:o};
         var s=stv[0];if(grand&&o.c==="bass")s=stv[1];
@@ -1353,7 +1356,7 @@ button.step .stars{display:block;margin-top:4px;font-size:15px;letter-spacing:.1
     if(q.draw)q.draw(vis);
     stopTL();
     if(q.rspec){q.rbox=stageBox(vis);drawR(q);}
-    if(q.staff&&!q.piano&&q.type==="choice"&&!q.rspec&&(q.kb!==false||Object.keys(marksOf(q.staff)).length))q.pkAuto=addPiano(vis,{labels:"white",marks:marksOf(q.staff)});
+    if(q.staff&&!q.piano&&!q.nokb&&q.type==="choice"&&!q.rspec&&(q.kb!==false||Object.keys(marksOf(q.staff)).length))q.pkAuto=addPiano(vis,{labels:"white",marks:marksOf(q.staff)});
     var ans=$("q-answer");clear(ans);$("q-labels").hidden=true;ans.classList.remove("nolabels");
     if(q.type==="letters"||q.type==="line"){
       q.keys={};q.kmarks={};
@@ -1634,22 +1637,15 @@ button.step .stars{display:block;margin-top:4px;font-size:15px;letter-spacing:.1
   }
   /* Ode to Joy read from the staff (book page 44): one bar per question */
   function nameOf(m){var L=naturalLetter(m%12);return L+(Math.floor(m/12)-1);}
-  function odeBars(){var bars=[];[PIECES.ode1,PIECES.ode2].forEach(function(pc){var ev=pieceEvents(pc);ev.forEach(function(e){var b=Math.floor(e.s/4);(bars[b+(pc===PIECES.ode2?4:0)]=bars[b+(pc===PIECES.ode2?4:0)]||[]).push({n:nameOf(e.m),c:"treble",dur:e.d>=4?"w":(e.d>=2?"h":"q"),f:e.f});});});return bars;}
+  function durOf(d){return d>=4?"w":(d>=2?"h":"q");}
+  function restOf(d){return d>=4?"wr":(d>=2?"hr":"qr");}
+  function odeBars(){var bars=[];pieceEvents(PIECES.ode).forEach(function(e){(bars[e.bar]=bars[e.bar]||[]).push({n:nameOf(e.m),c:"treble",dur:durOf(e.d),f:e.f});});return bars;}
   function genOde(s){var bars=odeBars(),b=s.n%bars.length,items=bars[b].map(function(x){return {n:x.n,c:x.c,dur:x.dur};});
     var q={type:"line",prompt:"Bar "+(b+1)+" of 8. Say each note, then tap it.",sub:b===0?"The tune you know by ear, now in notes. Same notes, same fingers.":"",items:items,idx:0,marks:[],curMiss:false,clefName:"treble",doneMsg:b===7?"That's the whole tune, read from the notes!":"Bar "+(b+1)+" done."};
     q.staff=lineSpec(q);return q;}
-  /* ---------- book twins (from the book Claude's sync/map.md + sync/book_app_content.json, 2026-10-06) ---------- */
-  var PIECES={
-    bigben:{name:"Westminster Chimes · the Big Ben tune",pos:{rh:"G3"},rows:[{rh:[["C:2","E:4","D:3","G:1"],["C:2","D:3","E:4","C:2"]]},{rh:[["E:4","C:2","D:3","G:1"],["G:1","D:3","E:4","C:2"]]}]},
-    jingle:{name:"Jingle Bells · the chorus",pos:{rh:"C4"},rows:[{rh:[["E:3","E:3","E:3","-"],["E:3","E:3","E:3","-"]]},{rh:[["E:3","G:5","C:1","D:2"],["E:3","-","-","-"]]}]},
-    grieg:{name:"Grieg · In the Hall of the Mountain King, the opening",pos:{rh:"A3"},rows:[{rh:[["A:1","B:2","C:3","D:4"],["E:5","C:3","E:5","-"]]},{rh:[["A:1","B:2","C:3","D:4"],["E:5","C:3","E:5","-"]]}]},
-    grace:{name:"Amazing Grace · the first line",pos:{rh:"C4"},fingersOnly:true,rows:[{rh:[["1","3","5","3","5","4","3","2","1"]]}]},
-    bigben2:{name:"Westminster Chimes · with the low bell",pos:{rh:"G3",lh:"C3"},rows:[
-      {rh:[["C:2","E:4","D:3","G:1"],["C:2","D:3","E:4","C:2"]],lh:[["C:5","-","-","-"],["C:5","-","-","-"]]},
-      {rh:[["E:4","C:2","D:3","G:1"],["G:1","D:3","E:4","C:2"]],lh:[["C:5","-","-","-"],["C:5","-","-","-"]]}]},
-    ode1:{name:"Ode to Joy · Beethoven, first half",pos:{rh:"C4"},rows:[{rh:[["E:3","E:3","F:4","G:5"],["G:5","F:4","E:3","D:2"]]},{rh:[["C:1","C:1","D:2","E:3"],["E:3","D:2","D:2","-"]]}]},
-    ode2:{name:"Ode to Joy · second half",pos:{rh:"C4"},rows:[{rh:[["E:3","E:3","F:4","G:5"],["G:5","F:4","E:3","D:2"]]},{rh:[["C:1","C:1","D:2","E:3"],["D:2","C:1","C:1","-"]]}]}
-  };
+  /* ---------- book twins: data generated from the book Claude's sync/book_app_content.json, version 2026-10-15 ----------
+     each note is [pitch, counts, finger]; ["r",counts] is a rest. Pitches and rhythms are copied from the book file, never edited by hand. */
+  var PIECES={"bigben":{"name":"Westminster Chimes · the Big Ben tune","rh":[[["C4",1,2],["E4",1,4],["D4",1,3],["G3",2,1]],[["C4",1,2],["D4",1,3],["E4",1,4],["C4",2,2]],[["E4",1,4],["C4",1,2],["D4",1,3],["G3",2,1]],[["G3",1,1],["D4",1,3],["E4",1,4],["C4",2,2]]]},"jingle":{"name":"Jingle Bells · the chorus","rh":[[["E4",1,3],["E4",1,3],["E4",2,3]],[["E4",1,3],["E4",1,3],["E4",2,3]],[["E4",1,3],["G4",1,5],["C4",1,1],["D4",1,2]],[["E4",4,3]]]},"grieg":{"name":"Grieg · the opening","rh":[[["A3",1,1],["B3",1,2],["C4",1,3],["D4",1,4]],[["E4",1,5],["C4",1,3],["E4",2,5]],[["A3",1,1],["B3",1,2],["C4",1,3],["D4",1,4]],[["E4",1,5],["C4",1,3],["E4",2,5]]]},"grace":{"name":"Amazing Grace · the first line","rh":[[["C#4",1]],[["F#4",2],["A#4",0.5],["F#4",0.5]],[["A#4",2],["G#4",1]],[["F#4",2],["D#4",1]],[["C#4",3]]],"keyNum":{"C#4":1,"D#4":2,"F#4":3,"G#4":4,"A#4":5}},"bigben2":{"name":"Westminster Chimes · with the low bell","rh":[[["C4",1,2],["E4",1,4],["D4",1,3],["G3",2,1]],[["C4",1,2],["D4",1,3],["E4",1,4],["C4",2,2]],[["E4",1,4],["C4",1,2],["D4",1,3],["G3",2,1]],[["G3",1,1],["D4",1,3],["E4",1,4],["C4",2,2]]],"lh":[[["C3",5,5]],[["C3",5,5]],[["C3",5,5]],[["C3",5,5]]]},"ode1":{"name":"Ode to Joy · Beethoven","rh":[[["E4",1,3],["E4",1,3],["F4",1,4],["G4",1,5]],[["G4",1,5],["F4",1,4],["E4",1,3],["D4",1,2]],[["C4",1,1],["C4",1,1],["D4",1,2],["E4",1,3]],[["E4",1,3],["D4",1,2],["D4",2,2]]]},"ode2":{"name":"Ode to Joy · second half","rh":[[["E4",1,3],["E4",1,3],["F4",1,4],["G4",1,5]],[["G4",1,5],["F4",1,4],["E4",1,3],["D4",1,2]],[["C4",1,1],["C4",1,1],["D4",1,2],["E4",1,3]],[["D4",1,2],["C4",1,1],["C4",2,1]]]},"ex1a":{"name":"Reading Exercise 1a","rh":[[["G4",1,2],["G4",1,2],["G4",1,2],["G4",1,2]],[["G4",2,2],["G4",2,2]],[["G4",1,2],["G4",1,2],["G4",1,2],["G4",1,2]],[["G4",4,2]],[["G4",1,2],["G4",1,2],["G4",2,2]],[["G4",4,2]],[["G4",1,2],["G4",1,2],["G4",1,2],["G4",1,2]],[["G4",4,2]]]},"ex1":{"name":"Reading Exercise 1","rh":[[["G4",1,2],["G4",1,2],["A4",1,3],["A4",1,3]],[["G4",2,2],["A4",2,3]],[["A4",1,3],["A4",1,3],["G4",2,2]],[["G4",1,2],["A4",1,3],["G4",1,2],["A4",1,3]],[["A4",2,3],["A4",2,3]],[["G4",1,2],["A4",1,3],["G4",2,2]],[["A4",1,3],["G4",1,2],["A4",1,3],["A4",1,3]],[["G4",4,2]]]},"ex2":{"name":"Reading Exercise 2","rh":[[["F4",1,1],["G4",1,2],["A4",2,3]],[["A4",1,3],["G4",1,2],["F4",2,1]],[["G4",1,2],["F4",1,1],["G4",1,2],["A4",1,3]],[["G4",4,2]],[["A4",1,3],["A4",1,3],["G4",1,2],["G4",1,2]],[["F4",2,1],["G4",2,2]],[["A4",1,3],["G4",1,2],["F4",1,1],["G4",1,2]],[["F4",4,1]]]},"ex3":{"name":"Reading Exercise 3","rh":[[["E4",1,1],["F4",1,2],["G4",1,3],["A4",1,4]],[["A4",1,4],["G4",1,3],["F4",2,2]],[["E4",1,1],["F4",1,2],["E4",1,1],["F4",1,2]],[["G4",4,3]],[["A4",1,4],["A4",1,4],["G4",1,3],["F4",1,2]],[["E4",2,1],["F4",2,2]],[["G4",1,3],["F4",1,2],["E4",1,1],["F4",1,2]],[["E4",4,1]]]},"ex4":{"name":"Reading Exercise 4","rh":[[["D4",1,1],["E4",1,2],["F4",1,3],["G4",1,4]],[["A4",2,5],["G4",2,4]],[["F4",1,3],["E4",1,2],["D4",1,1],["E4",1,2]],[["F4",4,3]],[["G4",1,4],["F4",1,3],["E4",1,2],["D4",1,1]],[["E4",2,2],["D4",2,1]],[["D4",1,1],["E4",1,2],["F4",1,3],["E4",1,2]],[["D4",4,1]]]},"ex5":{"name":"Reading Exercise 5","rh":[[["C4",1,1],["D4",1,2],["E4",1,3],["F4",1,4]],[["G4",4,5]],[["G4",1,5],["F4",1,4],["E4",1,3],["D4",1,2]],[["C4",4,1]],[["C4",1,1],["D4",1,2],["E4",2,3]],[["E4",1,3],["F4",1,4],["G4",2,5]],[["G4",1,5],["F4",1,4],["E4",1,3],["D4",1,2]],[["C4",4,1]]]},"ode":{"name":"Ode to Joy · Beethoven · arr. Maria Pisarenko","rh":[[["E4",1,3],["E4",1,3],["F4",1,4],["G4",1,5]],[["G4",1,5],["F4",1,4],["E4",1,3],["D4",1,2]],[["C4",1,1],["C4",1,1],["D4",1,2],["E4",1,3]],[["E4",1,3],["D4",1,2],["D4",2,2]],[["E4",1,3],["E4",1,3],["F4",1,4],["G4",1,5]],[["G4",1,5],["F4",1,4],["E4",1,3],["D4",1,2]],[["C4",1,1],["C4",1,1],["D4",1,2],["E4",1,3]],[["D4",1,2],["C4",1,1],["C4",2,1]]]},"ex6":{"name":"Reading Exercise 6","rh":[[["C4",1,1],["D4",1,2],["E4",2,3]],[["E4",1,3],["r",1],["E4",1,3],["r",1]],[["G4",1,5],["F4",1,4],["E4",1,3],["D4",1,2]],[["C4",2,1],["r",2]],[["E4",1,3],["G4",1,5],["E4",1,3],["C4",1,1]],[["D4",2,2],["r",2]],[["C4",1,1],["D4",1,2],["E4",1,3],["F4",1,4]],[["G4",2,5],["r",2]]]},"largo":{"name":"Largo · Antonín Dvořák, Symphony No. 9 · arr. Maria Pisarenko","rh":[[["E4",1,3],["G4",1,5],["G4",2,5]],[["E4",1,3],["D4",1,2],["C4",2,1]],[["D4",1,2],["E4",1,3],["G4",1,5],["E4",1,3]],[["D4",2,2],["r",2]],[["E4",1,3],["G4",1,5],["G4",2,5]],[["E4",1,3],["D4",1,2],["C4",2,1]],[["D4",1,2],["E4",1,3],["D4",1,2],["C4",1,1]],[["C4",2,1],["r",2]]]},"clap49":{"name":"Clap four, silent three","rh":[[["C4",1],["C4",1],["r",1],["C4",1]],[["C4",1],["C4",1],["r",1],["C4",1]],[["C4",1],["C4",1],["r",1],["C4",1]],[["C4",1],["C4",1],["r",1],["C4",1]],[["C4",1],["C4",1],["r",1],["C4",1]],[["C4",1],["C4",1],["r",1],["C4",1]],[["C4",1],["C4",1],["r",1],["C4",1]],[["C4",1],["C4",1],["r",1],["C4",1]]]},"lowc":{"name":"Low C under three notes","rh":[[["C4",1,1],["D4",1,2],["E4",2,3]]],"lh":[[["C3",4,5]]]},"places":{"name":"Big Ben in three places","rh":[[["C4",1,2],["E4",1,4],["D4",1,3],["G3",2,1]],[["C4",1,2],["D4",1,3],["E4",1,4],["C4",2,2]],[["E4",1,4],["C4",1,2],["D4",1,3],["G3",2,1]],[["G3",1,1],["D4",1,3],["E4",1,4],["C4",2,2]]],"places":{"home":{"rh":[[["C4",1,2],["E4",1,4],["D4",1,3],["G3",2,1]],[["C4",1,2],["D4",1,3],["E4",1,4],["C4",2,2]],[["E4",1,4],["C4",1,2],["D4",1,3],["G3",2,1]],[["G3",1,1],["D4",1,3],["E4",1,4],["C4",2,2]]]},"low":{"rh":[[["C3",1,2],["E3",1,4],["D3",1,3],["G2",2,1]],[["C3",1,2],["D3",1,3],["E3",1,4],["C3",2,2]],[["E3",1,4],["C3",1,2],["D3",1,3],["G2",2,1]],[["G2",1,1],["D3",1,3],["E3",1,4],["C3",2,2]]]},"high":{"rh":[[["C5",1,2],["E5",1,4],["D5",1,3],["G4",2,1]],[["C5",1,2],["D5",1,3],["E5",1,4],["C5",2,2]],[["E5",1,4],["C5",1,2],["D5",1,3],["G4",2,1]],[["G4",1,1],["D5",1,3],["E5",1,4],["C5",2,2]]]}}}};
   var TW=[
     {p:3,id:"start",t:"How to practice",parts:["track"]},
     {p:4,id:"u0-keys",t:"Find your way around",parts:["K1","K2"]},
@@ -1665,56 +1661,95 @@ button.step .stars{display:block;margin-top:4px;font-size:15px;letter-spacing:.1
     {p:14,id:"u1-5",t:"Fingers Have Numbers",parts:["F1"]},
     {p:15,head:"The Keyboard's Map"},
     {p:16,id:"u2-1",t:"Twos and Threes",parts:["K1","K2"]},
-    {p:17,id:"u2-2",t:"One Tune, Three Places",parts:["play"],piece:"grace",places:true},
+    {p:17,id:"u2-2",t:"One Tune, Three Places",parts:["play"],piece:"places",places:true},
     {p:18,id:"u2-3",t:"Amazing Grace",parts:["listen","play"],piece:"grace"},
     {p:19,head:"Steady Beat"},
     {p:20,id:"u3-1",t:"Walk It, Then Play It",parts:["B1"]},
     {p:21,id:"u3-2",t:"Long Notes, Short Notes",parts:["R1"]},
     {p:22,id:"u3-3",t:"Jingle Bells, Counted",parts:["play"],piece:"jingle",count:true},
     {p:23,head:"Two Hands"},
-    {p:24,id:"u4-1",t:"Your Left Hand Joins In",parts:["F2","watch"]},
+    {p:24,id:"u4-1",t:"Your Left Hand Joins In",parts:["F2","play","watch"],piece:"lowc"},
     {p:25,id:"u4-2",t:"Big Ben, With the Big Bell",parts:["listen","play"],piece:"bigben2"},
     {p:26,head:"Ode to Joy, by Ear"},
     {p:27,id:"u5-1",t:"Ode to Joy, First Half",parts:["listen","play","E2"],piece:"ode1"},
     {p:28,id:"u5-2",t:"Ode to Joy, Second Half",parts:["listen","play"],piece:"ode2"},
     {p:29,head:"How to Practice"},
-    {p:30,id:"u6-1",t:"Slow Is Smooth. Smooth Is Fast.",parts:["play","track"],piece:"ode2",slow:true},
+    {p:30,id:"u6-1",t:"Slow Is Smooth. Smooth Is Fast.",parts:["play","timer","track"],piece:"ode",slow:true},
+    {p:31,id:"u6-2",t:"Three Speeds, One Tune",parts:["play","timer"],choose:[["bigben","Big Ben"],["jingle","Jingle Bells"],["grieg","Grieg"],["grace","Amazing Grace"],["ode","Ode to Joy"]],slow:true},
+    {p:32,id:"u6-3",t:"Stop Before the Hard Place",parts:["window","watch"],piece:"ode1",win:[11,16]},
+    {p:33,head:"Reading Begins"},
+    {p:34,id:"u7-1",t:"Why There's a Page at All",parts:["clap"],piece:"bigben"},
+    {p:35,id:"u7-2",t:"Five Lines and Four Spaces",parts:["LS0"]},
+    {p:36,id:"u7-3",t:"This Line Is G",parts:["listen","play"],piece:"ex1a",score:true,noclef:true},
+    {p:37,id:"u7-4",t:"The Curl That Names It",parts:["watch","lesson","play"],lessons:["n1"],piece:"ex1a",score:true,dup:true},
+    {p:38,id:"u7-5",t:"A Sits in the Space Above",parts:["lesson"],lessons:["n2"]},
+    {p:39,id:"u7-6",t:"Two Notes, Eight Bars",parts:["listen","play"],piece:"ex1",score:true},
+    {p:40,id:"u7-7",t:"F Is the Space Below",parts:["lesson","play"],lessons:["n3"],piece:"ex2",score:true},
+    {p:41,id:"u7-8",t:"E Is the Bottom Line",parts:["lesson","LS4","play"],lessons:["n4"],piece:"ex3",score:true},
+    {p:42,id:"u7-9",t:"D Hangs Under the Staff",parts:["lesson","play"],lessons:["n5"],piece:"ex4",score:true},
+    {p:43,id:"u7-10",t:"Middle C Brings Its Own Line",parts:["lesson","play"],lessons:["n6"],piece:"ex5",score:true},
+    {p:44,id:"u7-11",t:"Ode to Joy, Now on the Page",parts:["listen","lesson","play"],lessons:["ode"],piece:"ode",score:true},
+    {p:45,id:"u7-12",t:"Study: Line, Space, Line",parts:["LS6","soon"]},
+    {p:46,id:"u7-13",t:"Still Early",parts:["soon"]},
+    {p:47,head:"Counting on the Page"},
+    {p:48,id:"u8-1",t:"The Two Numbers at the Front",parts:["CB","play"],piece:"ex5",score:true,ts:true,dup:true},
+    {p:49,id:"u8-2",t:"Silence Has a Shape",parts:["NR","lesson","play"],lessons:["rests"],piece:"clap49",voice:true,dup:true},
+    {p:50,id:"u8-3",t:"Reading Exercise 6: Four Counts and a Silence",parts:["play"],piece:"ex6",score:true,ts:true,voice:true},
+    {p:51,id:"u8-4",t:"Largo",parts:["listen","play"],piece:"largo",score:true,ts:true},
+    {p:52,id:"u8-5",t:"Study: Count the Silence",parts:["NR","soon"]},
+    {p:53,id:"u8-6",t:"Late Light",parts:["soon"]},
     {p:"back",id:"more",t:"Keep Going With Me",parts:["more"]}
   ];
   function twinById(id){for(var i=0;i<TW.length;i++)if(TW[i].id===id)return TW[i];return null;}
   function twinByPage(p){for(var i=0;i<TW.length;i++)if(String(TW[i].p)===String(p)&&TW[i].id)return TW[i];return null;}
-  /* note rows -> events {m,f,s(beat start),d(beats),hand} */
-  function upFrom(pos,L){var b=midi(pos),m=b;while(m%12!==SEMI[L])m++;return m;}
-  function whiteFrom(pos,k){var m=midi(pos),n=1;while(n<k){m++;if([1,3,6,8,10].indexOf(m%12)<0)n++;}return m;}
+  /* notes -> events {m,f,k(black-key number),s(count start),d(counts),hand,bar} */
   function pieceEvents(pc,place){
-    var ev=[];["rh","lh"].forEach(function(hd){
-      var beat=0,last=null,pos=(hd==="rh"&&place)?place:pc.pos[hd];
-      pc.rows.forEach(function(r){(r[hd]||[]).forEach(function(bar){bar.forEach(function(tk){
-        if(tk==="-"){if(last)last.d++;}
-        else{var m,f;if(pc.fingersOnly){f=+tk;m=whiteFrom(pos,f);}else{var a=tk.split(":");f=+a[1];m=upFrom(pos,a[0]);}
-          last={m:m,f:f,s:beat,d:1,hand:hd};ev.push(last);}
-        beat++;});});});
-    });
+    var src=(place&&pc.places)?pc.places[place]:pc,ev=[];
+    ["rh","lh"].forEach(function(hd){var beat=0;(src[hd]||[]).forEach(function(bar,bi){bar.forEach(function(n){
+      if(n[0]==="r"){beat+=n[1];return;}
+      ev.push({m:midi(n[0]),f:n[2],k:pc.keyNum?pc.keyNum[n[0]]:undefined,s:beat,d:n[1],hand:hd,bar:bi});beat+=n[1];});});});
     ev.sort(function(a,b){return a.s-b.s||(a.hand==="lh"?-1:1);});return ev;
   }
-  function hasLH(pc){return pc.rows.some(function(r){return !!r.lh;});}
+  function pieceRests(pc){var out=[],beat=0;(pc.rh||[]).forEach(function(bar,bi){bar.forEach(function(n){if(n[0]==="r")out.push({s:beat,d:n[1],bar:bi});beat+=n[1];});});return out;}
+  function hasLH(pc){return !!(pc.lh&&pc.lh.length);}
+  function fLabel(e){return e.f!=null?String(e.f):(e.k!=null?String(e.k):"");}
   /* finger numbers drawn on keys */
   function fingerMarks(svg,map){
     svg.querySelectorAll(".fnum").forEach(function(n){n.parentNode.removeChild(n);});
-    Object.keys(map).forEach(function(m){var r=svg.querySelector('rect[data-m="'+m+'"]');if(!r)return;
+    Object.keys(map).forEach(function(m){var r=svg.querySelector('rect[data-m="'+m+'"]');if(!r||!map[m])return;
       var x=+r.getAttribute("x")+(+r.getAttribute("width"))/2,bk=r.classList.contains("bk"),y=bk?60:72;
       el(svg,"circle",{cx:x,cy:y,r:13,class:"fnum fdot"});el(svg,"text",{x:x,y:y+6,"font-size":17,class:"fnum ftx","text-anchor":"middle"},String(map[m]));});
   }
-  var twinTL=[];function twinStop(){twinTL.forEach(clearTimeout);twinTL=[];}
-  function hearPiece(pc,speed,hands,place,onNote,done){
-    twinStop();ctx();var ev=pieceEvents(pc,place).filter(function(e){return hands==="both"||e.hand===hands;}),bm=60000/(84*(speed||1)),end=0;
-    ev.forEach(function(e){twinTL.push(setTimeout(function(){tone(mf(e.m),0,Math.min(1.6,e.d*bm/1000*0.95),0.28,"triangle");tone(mf(e.m)*2,0,0.5,0.06,"sine");if(onNote)onNote(e,true);},e.s*bm));
-      twinTL.push(setTimeout(function(){if(onNote)onNote(e,false);},(e.s+e.d)*bm-40));end=Math.max(end,(e.s+e.d)*bm);});
-    twinTL.push(setTimeout(function(){if(done)done();},end+60));
+  var twinTL=[];function twinStop(){twinTL.forEach(clearTimeout);twinTL=[];try{if(window.speechSynthesis)speechSynthesis.cancel();}catch(e){}}
+  function speak(t){try{if(!sound||!window.speechSynthesis||!window.SpeechSynthesisUtterance){click(true);return;}var u=new SpeechSynthesisUtterance(t);u.rate=1.25;u.lang="en-US";speechSynthesis.speak(u);}catch(e){click(true);}}
+  function clap(){tone(190,0,0.07,0.32,"square");tone(2300,0,0.05,0.12,"square");}
+  /* schedule events; opt: speed, onNote(e,on), done, clap, offset (ms), voice (rests of the piece) */
+  function playEvents(ev,opt){
+    ctx();var bm=60000/(84*(opt.speed||1)),off=opt.offset||0,end=off;
+    ev.forEach(function(e){twinTL.push(setTimeout(function(){if(opt.clap)clap();else{tone(mf(e.m),0,Math.min(1.6,e.d*bm/1000*0.95),0.28,"triangle");tone(mf(e.m)*2,0,0.5,0.06,"sine");}if(opt.onNote)opt.onNote(e,true);},off+e.s*bm));
+      twinTL.push(setTimeout(function(){if(opt.onNote)opt.onNote(e,false);},off+(e.s+e.d)*bm-40));end=Math.max(end,off+(e.s+e.d)*bm);});
+    (opt.voice||[]).forEach(function(r){for(var b=r.s;b<r.s+r.d;b++)(function(b){twinTL.push(setTimeout(function(){speak(["one","two","three","four"][b%4]);},off+b*bm));})(b);});
+    twinTL.push(setTimeout(function(){if(opt.done)opt.done();},end+60));return end;
+  }
+  function hearPiece(pc,speed,hands,place,onNote,done,T){
+    twinStop();var ev=pieceEvents(pc,place).filter(function(e){return hands==="both"||e.hand===hands;});
+    playEvents(ev,{speed:speed,onNote:onNote,done:done,voice:(T&&T.voice)?pieceRests(pc):null});
+  }
+  /* the piece on a staff (reading pages only, p. 36 on): four bars to a line */
+  function scoreSpecs(pc,T,hl){
+    var specs=[],idx=0,items=[],nb=pc.rh.length;
+    pc.rh.forEach(function(bar,bi){
+      bar.forEach(function(n){if(n[0]==="r")items.push({rest:restOf(n[1])});else{items.push({notes:[n[0]],dur:durOf(n[1]),color:idx===hl?"var(--accent)":null});idx++;}});
+      var last=(bi===nb-1),eol=(bi%4===3)||last;
+      if(eol){specs.push({clef:T.noclef?"none":"treble",ts:(T.ts&&specs.length===0)?[4,4]:null,w:640,bar:true,aria:"Bars "+(bi-items.filter(function(x){return x.barline;}).length+1-0)+" on the staff",items:items});items=[];}
+      else items.push({barline:true});
+    });
+    specs.forEach(function(s,i){s.aria="Line "+(i+1)+" of the music";});
+    return specs;
   }
   var curTwin=null;
   function openTwin(T){
-    if(!T)return;twinStop();curTwin=T;put("lasttwin",T.id);
+    if(!T)return;twinStop();stopTimer();curTwin=T;put("lasttwin",T.id);
     $("tw-page").textContent=(T.p==="back"?"Back page":"Book page "+T.p)+" · code "+T.id;
     $("tw-title").textContent=T.t;putMascot("tw-mascot","hi",64);
     var host=$("tw-body");clear(host);
@@ -1735,10 +1770,19 @@ button.step .stars{display:block;margin-top:4px;font-size:15px;letter-spacing:.1
     F2:{t:"Finger numbers: left hand",s:"Same numbers, mirror hand",gen:genF("lh"),N:8},
     B1:{t:"Tap with the beat",s:"Keep a steady walk",gen:genB1,N:3},
     R1:{t:"Long or short?",s:"Listen, then choose",gen:genR1,N:8},
-    E2:{t:"What comes next?",s:"Higher, lower or the same?",gen:genE2,N:6}
+    E2:{t:"What comes next?",s:"Higher, lower or the same?",gen:genE2,N:6},
+    LS0:{t:"Line or space?",s:"Is the note on a line or in a space?",gen:genLS(range("E4","F5"),"none"),N:8},
+    LS4:{t:"Line or space?",s:"E, F, G and A on the staff",gen:genLS(range("E4","A4"),"treble"),N:8},
+    LS6:{t:"Line or space?",s:"C, E and G on lines; D and F in spaces",gen:genLS(range("C4","G4"),"treble"),N:8},
+    CB:{t:"How many counts?",s:"Read the lengths in a bar of 4/4",gen:genCB,N:8},
+    NR:{t:"Note or rest?",s:"Sound or counted silence",gen:genNR,N:8}
   };
   function startGame(k,T){var g=GAMES[k];startSession({kind:"lesson",lesson:{id:"g-"+k,t:g.t,N:g.N,gen:g.gen,twin:T},N:g.N,gen:g.gen,timed:false});}
+  var tmr={iv:0,sec:0,on:false,out:null,btn:null};
+  function stopTimer(){clearInterval(tmr.iv);tmr.iv=0;tmr.on=false;if(tmr.btn)tmr.btn.textContent=tmr.sec?"▶ Go on":"▶ Start";}
+  function fmtT(s){return Math.floor(s/60)+":"+("0"+(s%60)).slice(-2);}
   var TWP={
+    soon:function(host){var c=card(host,"Dr. Pisarenko's piece","Coming soon");c.appendChild(h("p","sub","The listen and play-along for this piece open here soon. For now, play it from the printed page."));},
     track:function(host){var c=card(host,"Practice tracker","How long did you play today?");
       c.appendChild(h("p","sub","Tick it here, the same as the boxes in the book. Any tick keeps your streak going."));
       var row=h("div","seg"),lv=[["♪","5 min"],["♪♪","15 min"],["♪♪♪","30+ min"]],t=get("ticks",{}),today=dayKey(new Date());
@@ -1749,70 +1793,119 @@ button.step .stars{display:block;margin-top:4px;font-size:15px;letter-spacing:.1
         for(var i=0;i<7;i++){var k=dayKey(d),s=h("span",tt[k]?"y":null);s.appendChild(h("b",null,["S","M","T","W","T","F","S"][d.getDay()]));s.appendChild(h("i",null,tt[k]?["","♪","♪♪","♪♪♪"][tt[k]]:"·"));wk.appendChild(s);d.setDate(d.getDate()+1);}
         var n=streak();wk.appendChild(h("p","sub",n>0?n+"-day streak":"Your streak starts with today's tick."));}
       drawWeek();},
+    timer:function(host){var c=card(host,"Practice timer","Play without stopping");
+      c.appendChild(h("p","sub","Start the timer when you sit down. Five minutes is one ♪, fifteen is ♪♪, thirty or more is ♪♪♪."));
+      var out=h("p","score",fmtT(0)),row=h("div","pabtns"),go=h("button","big","▶ Start"),rs=h("button","big alt","Reset");go.type=rs.type="button";
+      tmr.sec=0;tmr.out=out;tmr.btn=go;c.appendChild(out);row.appendChild(go);row.appendChild(rs);c.appendChild(row);
+      go.addEventListener("click",function(){if(tmr.on){stopTimer();return;}tmr.on=true;go.textContent="❚❚ Pause";tmr.iv=setInterval(function(){tmr.sec++;out.textContent=fmtT(tmr.sec);if(tmr.sec===300||tmr.sec===900||tmr.sec===1800)chime(false);},1000);});
+      rs.addEventListener("click",function(){stopTimer();tmr.sec=0;out.textContent=fmtT(0);go.textContent="▶ Start";});},
     listen:function(host,T){var pc=PIECES[T.piece],c=card(host,"Listen and watch",pc.name);
-      c.appendChild(h("p","sub","Dr. Pisarenko's recording and video for this page are coming. Until then, hear the tune on the app piano."));
-      var b=h("button","mini","▶ Hear it");b.type="button";b.addEventListener("click",function(){hearPiece(pc,1,hasLH(pc)?"both":"rh");});c.appendChild(b);},
+      c.appendChild(h("p","sub","Dr. Pisarenko's recording and video for this page are coming. Until then, hear the tune on the app piano."+(T.voice?" A voice counts the rests.":"")));
+      var b=h("button","mini","▶ Hear it");b.type="button";b.addEventListener("click",function(){hearPiece(pc,1,hasLH(pc)?"both":"rh",null,null,null,T);});c.appendChild(b);},
     watch:function(host,T){var c=card(host,"Watch",T.t);c.appendChild(h("p","sub","Dr. Pisarenko's video for this page is coming. Read the page in the book, then come back here to watch it."));},
     E1:function(host){var c=card(host,"Ear game","Pressed or dropped?");c.appendChild(h("p","sub","This game uses Dr. Pisarenko's own two sounds: a pressed key and a dropped arm. It opens as soon as her recordings are in."));},
     library:function(host){var c=card(host,"Every tune in the book","In book order");var ul=h("div","lib");
-      TW.forEach(function(T){if(!T.piece||T.places||T.slow||T.count)return;var pc=PIECES[T.piece],r=h("div","librow"),t=h("div");t.appendChild(h("b",null,T.t));t.appendChild(h("span","sub"," · page "+T.p));
-        var b1=h("button","mini","▶");b1.type="button";b1.setAttribute("aria-label","Hear "+T.t);b1.addEventListener("click",function(){hearPiece(pc,1,hasLH(pc)?"both":"rh");});
+      TW.forEach(function(T){if(!T.piece||T.places||T.slow||T.count||T.dup||T.win||T.parts.indexOf("play")<0)return;var pc=PIECES[T.piece],r=h("div","librow"),t=h("div");t.appendChild(h("b",null,T.t));t.appendChild(h("span","sub"," · page "+T.p));
+        var b1=h("button","mini","▶");b1.type="button";b1.setAttribute("aria-label","Hear "+T.t);b1.addEventListener("click",function(){hearPiece(pc,1,hasLH(pc)?"both":"rh",null,null,null,T);});
         var b2=h("button","mini","Play along");b2.type="button";b2.addEventListener("click",function(){openTwin(T);});r.appendChild(t);r.appendChild(b1);r.appendChild(b2);ul.appendChild(r);});
       c.appendChild(ul);c.appendChild(h("p","sub","Dr. Pisarenko's recordings will replace the app piano here, piece by piece."));},
     more:function(host){var c=card(host,"From Dr. Maria Pisarenko","Keep going with me");
-      c.appendChild(h("p",null,"You can play by ear, count a steady beat and use both hands. Next comes reading: the app's Learn path follows the book, starting with G on the second line."));
+      c.appendChild(h("p",null,"You can play by ear, read the notes from middle C up to A, count in 4/4 and count the rests. The app's Learn path keeps following the book, one sign at a time."));
       var a=h("button","big","Open Learn");a.type="button";a.addEventListener("click",function(){show("learn");});c.appendChild(a);
       var s=h("a","ghost backlink","mariapisarenko.com");s.href="https://mariapisarenko.com";s.target="_blank";s.rel="noopener";c.appendChild(s);
       var u=h("a","ghost backlink","Online Piano University: free course and lessons");u.href="https://onlinepianouniversity.com/";u.target="_blank";u.rel="noopener";c.appendChild(u);},
     play:function(host,T){buildPlayAlong(host,T);},
     lesson:function(host,T){(T.lessons||[]).forEach(function(id){var L=null;LESSONS.forEach(function(x){if(x.id===id)L=x;});if(!L)return;var c=card(host,"Practice this page",L.t);c.appendChild(h("p","sub",L.s));
       var b=h("button","big","Open");b.type="button";b.addEventListener("click",function(){ctx();openIntro(L);});c.appendChild(b);});},
+    window:function(host,T){var pc=PIECES[T.piece],ev=pieceEvents(pc),w0=T.win[0],w1=T.win[1],c=card(host,"The practice window",pc.name);
+      c.appendChild(h("p","sub","The hard place is ringed. Start two notes before it, stop two notes after it, then stop. Play just that window three times."));
+      var chips=h("div","nchips");c.appendChild(chips);
+      ev.forEach(function(e,i){var s=h("span","nchip");if(e.s>=w0&&e.s<w1)s.style.outline="3px solid var(--accent)";s.appendChild(h("b",null,PCN[e.m%12]));s.appendChild(h("i",null,fLabel(e)));if(e.d>1)s.appendChild(h("u",null,"–".repeat(Math.max(0,Math.round(e.d)-1))));s.dataset.i=i;chips.appendChild(s);});
+      function lit(e,on){var s=chips.querySelector('[data-i="'+ev.indexOf(e)+'"]');if(s)s.classList.toggle("on",on);}
+      var row=h("div","pabtns"),bA=h("button","big","▶ Whole line"),bW=h("button","big alt","▶ Window ×3");bA.type=bW.type="button";row.appendChild(bA);row.appendChild(bW);c.appendChild(row);
+      bA.addEventListener("click",function(){twinStop();playEvents(ev,{speed:1,onNote:lit});});
+      bW.addEventListener("click",function(){twinStop();var win=ev.filter(function(e){return e.s>=w0&&e.s<w1;}),len=w1-w0+1,all=[];
+        for(var r=0;r<3;r++)win.forEach(function(e){all.push({m:e.m,f:e.f,s:e.s-w0+r*len,d:e.d,hand:e.hand,src:e});});
+        playEvents(all,{speed:0.75,onNote:function(x,on){lit(x.src,on);}});});},
+    clap:function(host,T){var pc=PIECES[T.piece],ev=pieceEvents(pc),c=card(host,"Listen",pc.name);
+      c.appendChild(h("p","sub","First the rhythm alone, clapped: you hear the time, but not how high or low. Then the same rhythm played. That missing height is why music needs a page."));
+      var row=h("div","pabtns"),b1=h("button","big","▶ Clap, then play"),b2=h("button","big alt","▶ Clap only");b1.type=b2.type="button";row.appendChild(b1);row.appendChild(b2);c.appendChild(row);
+      b1.addEventListener("click",function(){twinStop();var end=playEvents(ev,{clap:true});playEvents(ev,{offset:end+1400});});
+      b2.addEventListener("click",function(){twinStop();playEvents(ev,{clap:true});});},
     game:function(host,T,k){var g=GAMES[k];if(!g)return;var c=card(host,"Game",g.t);c.appendChild(h("p","sub",g.s));var b=h("button","big","Play");b.type="button";b.addEventListener("click",function(){ctx();startGame(k,T);});c.appendChild(b);}
   };
   function buildPlayAlong(host,T){
-    var pc=PIECES[T.piece],lh=hasLH(pc),st={speed:T.slow?0.5:1,hands:"rh",place:null};
-    var c=card(host,T.slow?"Slow practice":(T.count?"Play along and count":"Play along"),pc.name);
-    if(T.slow)c.appendChild(h("p","sub","Start at 50%. When it is smooth three times in a row, move up to 75%, then 100%."));
+    var pc=PIECES[T.choose?T.choose[0][0]:T.piece],st={speed:T.slow?0.5:1,hands:"rh",place:T.places?"home":null,tune:T.choose?T.choose[0][0]:null};
+    var lh=hasLH(pc),c=card(host,T.slow?"Slow practice":(T.count?"Play along and count":"Play along"),pc.name),ttl=c.querySelector("h3");
+    if(T.slow)c.appendChild(h("p","sub",T.choose?"Pick any tune you know. Play it at 50%, then 75%, then 100%, all in one sitting: half, nearly, there.":"Start at 50%. When it is smooth three times in a row, move up to 75%, then 100%."));
     if(T.count)c.appendChild(h("p","sub","Count out loud with the clicks: 1 2 3 4. A long note keeps going while you count."));
-    if(pc.fingersOnly)c.appendChild(h("p","sub","Same finger numbers, different place on the keyboard."+(T.places?" Pick a place below.":"")));
+    if(T.voice)c.appendChild(h("p","sub","Listen: a voice counts every rest out loud. Count with it, and keep your hands quiet on the silence."));
+    if(T.places)c.appendChild(h("p","sub","The same Big Ben tune, the same fingers, in three places. Low sounds dark, high sounds bright."));
+    if(pc.keyNum)c.appendChild(h("p","sub","Black keys only. The numbers are the page's key numbers, 1 to 5. Play slowly and hum along."));
+    if(pc.draft)c.appendChild(h("p","sub","A practice version of Dr. Pisarenko's piece. The printed book has the final notes."));
     function seg(label,opts,key){var g=h("div","setgroup");g.appendChild(h("span","lab2",label));var s=h("div","seg");
       opts.forEach(function(o){var b=h("button",null,o[1]);b.type="button";b.setAttribute("aria-pressed",String(st[key]===o[0]));
-        b.addEventListener("click",function(){st[key]=o[0];s.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed","false");});b.setAttribute("aria-pressed","true");stopAll();draw();});s.appendChild(b);});
+        b.addEventListener("click",function(){st[key]=o[0];if(key==="tune"){pc=PIECES[o[0]];ttl.textContent=pc.name;}s.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed","false");});b.setAttribute("aria-pressed","true");stopAll();draw();});s.appendChild(b);});
       g.appendChild(s);c.appendChild(g);}
-    if(T.places){st.place="C4";seg("Place",[["C4","C position"],["F4","F position"],["G4","G position"]],"place");}
+    if(T.choose)seg("Tune",T.choose,"tune");
+    if(T.places)seg("Place",[["home","Home (page 5)"],["low","One group lower"],["high","One group higher"]],"place");
     seg("Speed",[[0.5,"50%"],[0.75,"75%"],[1,"100%"]],"speed");
     if(lh)seg("Hands",[["rh","Right"],["lh","Left"],["both","Both"]],"hands");
+    var sc=null;if(T.score){sc=h("div","stack");c.appendChild(sc);}
     var chips=h("div","nchips");c.appendChild(chips);
     var kbw=h("div","stage");c.appendChild(kbw);
     var row=h("div","pabtns"),bL=h("button","big","▶ Listen"),bY=h("button","big alt","Your turn");bL.type=bY.type="button";row.appendChild(bL);row.appendChild(bY);c.appendChild(row);
     var msg=h("p","msg");msg.setAttribute("aria-live","polite");c.appendChild(msg);
     var ev,kb,svg,turn=null;
     function evs(){return pieceEvents(pc,st.place).filter(function(e){return st.hands==="both"||e.hand===st.hands;});}
+    function drawScore(hl){if(!sc)return;clear(sc);scoreSpecs(pc,T,hl).forEach(function(sp){addStaff(sc,sp);});}
     function draw(){ev=evs();var ms=ev.map(function(e){return e.m;}),w=midiWindow(ms);
       while(true){var n=0;for(var m=w.from;m<=w.to;m++)if([1,3,6,8,10].indexOf(m%12)<0)n++;if(n>=8)break;w.to++;while([1,3,6,8,10].indexOf(w.to%12)>=0)w.to++;}
       clear(kbw);kb=pianoSVG({labels:"white",interactive:true,from:w.from,to:w.to,byMidi:true,onTap:onKey});svg=kb.svg;kbw.appendChild(svg);
-      clear(chips);ev.forEach(function(e,i){var s=h("span","nchip"+(e.hand==="lh"?" lh":""));s.appendChild(h("b",null,PCN[e.m%12]));s.appendChild(h("i",null,String(e.f)));if(e.d>1)s.appendChild(h("u",null,"–".repeat(e.d-1)));s.dataset.i=i;chips.appendChild(s);});
-      msg.textContent="";turn=null;}
-    function lightChip(i,on){var s=chips.querySelector('[data-i="'+i+'"]');if(s)s.classList.toggle("on",on);}
+      clear(chips);var rests=(st.hands==="lh")?[]:pieceRests(pc),items=ev.map(function(e,i){return {s:e.s,e:e,i:i};}).concat(rests.map(function(r){return {s:r.s,r:r};}));
+      items.sort(function(a,b){return a.s-b.s;});
+      items.forEach(function(it){if(it.r){var r=h("span","nchip");r.style.opacity=".75";r.appendChild(h("b",null,"rest"));r.appendChild(h("u",null," "+it.r.d));chips.appendChild(r);return;}
+        var e=it.e,s=h("span","nchip"+(e.hand==="lh"?" lh":""));s.appendChild(h("b",null,PCN[e.m%12]));s.appendChild(h("i",null,fLabel(e)));if(e.d>1)s.appendChild(h("u",null,"–".repeat(Math.max(0,Math.round(e.d)-1))));s.dataset.i=it.i;chips.appendChild(s);});
+      drawScore(-1);msg.textContent="";turn=null;}
+    function lightChip(i,on){var s=chips.querySelector('[data-i="'+i+'"]');if(s)s.classList.toggle("on",on);if(sc&&on&&ev[i]&&ev[i].hand==="rh")drawScore(ev.filter(function(x){return x.hand==="rh";}).indexOf(ev[i]));}
     var lit={},fm={};
-    function light(e,on){var key=e.m;if(on){lit[key]=e.hand==="lh"?"hint":"sel";fm[key]=e.f;}else{delete lit[key];delete fm[key];}kb.set(lit);fingerMarks(svg,fm);lightChip(ev.indexOf(e),on);}
-    function stopAll(){twinStop();lit={};fm={};turn=null;if(kb){kb.set({});fingerMarks(svg,{});}chips.querySelectorAll(".on").forEach(function(x){x.classList.remove("on");});}
-    bL.addEventListener("click",function(){stopAll();msg.textContent="Watch the keys and the finger numbers.";
+    function light(e,on){var key=e.m;if(on){lit[key]=e.hand==="lh"?"hint":"sel";fm[key]=fLabel(e);}else{delete lit[key];delete fm[key];}kb.set(lit);fingerMarks(svg,fm);lightChip(ev.indexOf(e),on);}
+    function stopAll(){twinStop();lit={};fm={};turn=null;if(kb){kb.set({});fingerMarks(svg,{});}chips.querySelectorAll(".on").forEach(function(x){x.classList.remove("on");});drawScore(-1);}
+    bL.addEventListener("click",function(){stopAll();msg.textContent=T.score?"Follow the notes on the staff, then the keys.":"Watch the keys and the finger numbers.";
       var bm=60000/(84*st.speed);if(T.count){var beats=Math.max.apply(null,ev.map(function(e){return e.s+e.d;}));for(var k=0;k<beats;k++)(function(k){twinTL.push(setTimeout(function(){click(k%4===0);},k*bm));})(k);}
-      hearPiece(pc,st.speed,st.hands,st.place,function(e,on){light(e,on);},function(){msg.textContent="Now press “Your turn” and play it.";});});
-    bY.addEventListener("click",function(){stopAll();turn={i:0,hit:{}};cue();msg.textContent="Play the lit key with the finger shown. Take your time.";});
+      playEvents(ev,{speed:st.speed,onNote:function(e,on){light(e,on);},done:function(){msg.textContent="Now press “Your turn” and play it.";},voice:(T.voice&&st.hands!=="lh")?pieceRests(pc):null});});
+    bY.addEventListener("click",function(){stopAll();turn={i:0,hit:{}};cue();msg.textContent=pc.keyNum?"Play the lit black key. Take your time.":"Play the lit key with the finger shown. Take your time.";});
     function group(){var s=ev[turn.i].s,g=[];for(var j=turn.i;j<ev.length&&ev[j].s===s;j++)g.push(j);return g;}
     function cue(){lit={};fm={};chips.querySelectorAll(".on").forEach(function(x){x.classList.remove("on");});
-      group().forEach(function(j){var e=ev[j];lit[e.m]=e.hand==="lh"?"hint":"sel";fm[e.m]=e.f;lightChip(j,true);});kb.set(lit);fingerMarks(svg,fm);}
+      group().forEach(function(j){var e=ev[j];lit[e.m]=e.hand==="lh"?"hint":"sel";fm[e.m]=fLabel(e);lightChip(j,true);});kb.set(lit);fingerMarks(svg,fm);}
     function onKey(m){playM(m);if(!turn)return;var g=group(),ok=false;
       g.forEach(function(j){if(ev[j].m===m){turn.hit[j]=1;ok=true;}});
       if(!ok){msg.textContent="Try the lit key.";return;}
       if(g.every(function(j){return turn.hit[j];})){turn.i=g[g.length-1]+1;
-        if(turn.i>=ev.length){turn=null;kb.set({});fingerMarks(svg,{});chips.querySelectorAll(".on").forEach(function(x){x.classList.remove("on");});chime(false);msg.textContent=pick(["You played it!","Beautiful. Again, a little more steady?","That's the whole tune!"]);markDay();return;}
+        if(turn.i>=ev.length){turn=null;kb.set({});fingerMarks(svg,{});chips.querySelectorAll(".on").forEach(function(x){x.classList.remove("on");});drawScore(-1);chime(false);msg.textContent=pick(["You played it!","Beautiful. Again, a little more steady?","That's the whole tune!"]);markDay();return;}
         cue();msg.textContent="";}
     }
     draw();
   }
+  /* reading games for pages 35 to 52 */
+  function genLS(pool,clef){return function(s){var n=pickNot(pool,s.last);s.last=n;var step=dia(n)-dia("E4"),line=(step%2===0);
+    return {type:"choice",kb:false,nokb:true,prompt:"On a line or in a space?",sub:clef==="none"?"Look closely: does a line run through the middle of the note?":"",
+      staff:{clef:clef,aria:"One note on the staff",items:[{notes:[n],dur:"w"}]},options:[{label:"On a line",v:"line"},{label:"In a space",v:"space"}],answer:line?"line":"space",answerLabel:line?"on a line":"in a space",
+      explain:(clef==="none"?"This note sits ":n[0]+" sits ")+(line?(n==="C4"?"on its own short line.":"on a line: the line runs through it."):(n==="D4"?"just under the staff, in the space below the bottom line.":"in a space, between two lines."))};};}
+  function genCB(s){
+    var bars=PIECES.ex5.rh;
+    if(s.n%4===3){return {type:"choice",kb:false,prompt:"How many counts fill every bar of 4/4?",sub:"Look at the two numbers at the front.",rspec:{ts:[4,4],cap:8,notes:[],blocks:false,counts:false,aria:"4/4"},
+      options:[2,3,4].map(function(n){return {label:n+" counts",v:n};}),answer:4,answerLabel:"4 counts",explain:"The top 4 says four counts in every bar."};}
+    var bi=Math.floor(Math.random()*bars.length),bar=bars[bi],i=Math.floor(Math.random()*bar.length),keys=bar.map(function(n){return durOf(n[1]);}),d=bar[i][1];
+    var nm={1:"quarter note",2:"half note",4:"whole note"}[d];
+    return {type:"choice",kb:false,prompt:"How many counts does the lit note get?",sub:"Bar "+(bi+1)+" of Reading Exercise 5, now with 4/4.",rspec:{ts:[4,4],cap:8,notes:keys,hl:i,counts:false,aria:"One bar in 4/4"},
+      options:[1,2,4].map(function(n){return {label:n+(n===1?" count":" counts"),v:n};}),answer:d,answerLabel:d+(d===1?" count":" counts"),explain:"A "+nm+": "+d+(d===1?" count.":" counts.")};
+  }
+  function genNR(s){var all=["q","h","w","qr","hr","wr"],k=pickNot(all,s.last);s.last=k;var r=isRest(k);
+    if(s.n%2===0)return {type:"choice",kb:false,prompt:"Note or rest?",sub:"",rspec:{cap:8,notes:[k],blocks:false,counts:false,aria:"A note or a rest"},
+      options:[{label:"Note",v:"n"},{label:"Rest",v:"r"}],answer:r?"r":"n",answerLabel:r?"a rest":"a note",explain:RN[k]+(r?": "+bw(RU[k])+" of counted silence.":": "+bw(RU[k])+" of sound.")};
+    return {type:"choice",kb:false,prompt:r?"How many counts of silence?":"How many counts does this note get?",sub:"",rspec:{cap:8,notes:[k],blocks:false,counts:false,aria:RN[k]},
+      options:[2,4,8].map(function(u){return {label:bw(u).replace("beats","counts").replace("beat","count"),v:u};}),answer:RU[k],answerLabel:bw(RU[k]).replace("beats","counts").replace("beat","count"),explain:RN[k]+" = "+bw(RU[k]).replace("beats","counts").replace("beat","count")+"."};}
   /* games */
   function genK1(s){var two=Math.random()<0.5;s.last=two;
     return {type:"tap",kb:false,prompt:"Tap a black key in a group of "+(two?"TWO":"THREE")+".",sub:"Look at the pattern, not the letters.",okPcs:two?[1,3]:[6,8,10],answerPc:two?1:6,targetName:two?"in a group of two":"in a group of three",
@@ -1841,18 +1934,19 @@ button.step .stars{display:block;margin-top:4px;font-size:15px;letter-spacing:.1
       options:[{label:"Higher",v:"up"},{label:"Lower",v:"down"},{label:"Same",v:"same"}],answer:ans,answerLabel:({up:"higher",down:"lower",same:"the same"})[ans],
       after:function(){playTo(k+1);},explain:"Listen to it with the next note."};}
   /* book screen */
+  var PARTL={track:"Tracker",timer:"Timer",listen:"Listen",watch:"Watch",play:"Play along",library:"All recordings",more:"What's next",lesson:"Lesson",window:"Practice window",clap:"Listen",E1:"Ear game",E2:"Ear game"};
   function renderBook(){var ol=$("bk-list");clear(ol);
     TW.forEach(function(T){if(T.head){ol.appendChild(h("li","sechead",T.head));return;}
-      var li=h("li"),b=h("button","step");b.type="button";var badge=h("div","badge",T.p==="back"?"→":String(T.p)),d=h("div");d.appendChild(h("b",null,T.t));d.appendChild(h("span","s",T.parts.map(function(k){return ({track:"Tracker",listen:"Listen",watch:"Watch",play:"Play along",library:"All recordings",more:"What's next",K1:"Game",K2:"Game",F1:"Game",F2:"Game",B1:"Game",R1:"Game",E1:"Ear game",E2:"Ear game"})[k];}).filter(function(v,i,a){return a.indexOf(v)===i;}).join(" · ")));
+      var li=h("li"),b=h("button","step");b.type="button";var badge=h("div","badge",T.p==="back"?"→":String(T.p)),d=h("div");d.appendChild(h("b",null,T.t));d.appendChild(h("span","s",T.parts.map(function(k){return PARTL[k]||"Game";}).filter(function(v,i,a){return a.indexOf(v)===i;}).join(" · ")));
       b.appendChild(badge);b.appendChild(d);b.addEventListener("click",function(){openTwin(T);});li.appendChild(b);ol.appendChild(li);});}
   function goCode(v){v=String(v||"").trim().toLowerCase().replace(/^.*\/p\//,"").replace(/^page\s*/,"");var T=twinById(v)||twinByPage(v);
-    if(T){$("bk-err").textContent="";openTwin(T);return true;}$("bk-err").textContent="No page with that number or code yet. Pages 3 to 30 are in the app so far.";return false;}
+    if(T){$("bk-err").textContent="";openTwin(T);return true;}$("bk-err").textContent="No page with that number or code yet. Pages 3 to 53 are in the app so far.";return false;}
 
   /* ---------- navigation ---------- */
   var SCREENS=["home","learn","intro","quiz","psetup","result","record","book","twin"];
   function show(id){
     SCREENS.forEach(function(s){$(s).hidden=(s!==id);});window.scrollTo(0,0);if(id!=="quiz"&&id!=="result"&&id!=="record")stopMic();
-    if(id!=="twin")twinStop();if(id==="learn")renderPath();if(id==="book")renderBook();if(id==="psetup")renderSetup();if(id==="home")updateChips();
+    if(id!=="twin"){twinStop();stopTimer();}if(id==="learn")renderPath();if(id==="book")renderBook();if(id==="psetup")renderSetup();if(id==="home")updateChips();
   }
   $("b-learn").addEventListener("click",function(){ctx();show("learn");});
   $("b-practice").addEventListener("click",function(){ctx();show("psetup");});
@@ -1870,6 +1964,8 @@ button.step .stars{display:block;margin-top:4px;font-size:15px;letter-spacing:.1
   window.__rmn={TW:TW,openTwin:openTwin,pieceEvents:pieceEvents,PIECES:PIECES,rtm:rtm,BOOK:BOOK,session:function(){return S;},lessons:LESSONS,odeBars:odeBars,isRest:isRest,pcfg:pcfg,yin:yinPitch,pcOf:pcOf,heard:onHeard,mic:mic};
 })();
 </script>
+
+
 
 
 </body></html>
