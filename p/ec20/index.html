@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>I Saw Three Ships · Dr. Maria Pisarenko plays it</title>
+<meta name="description" content="Watch concert pianist Dr. Maria Pisarenko play I Saw Three Ships from the book Easy Christmas Piano for Adults — 30 Favorite Carols for Beginners — score and hands on screen.">
+<link rel="canonical" href="https://mariapisarenko.com/p/ec20/">
+<style>body{margin:0;font:17px/1.55 Georgia,'Times New Roman',serif;background:#FCFAF4;color:#1d2136}
+.wrap{max-width:720px;margin:0 auto;padding:28px 18px 60px}
+.eyebrow{font:600 11px/1.4 Montserrat,Arial,sans-serif;letter-spacing:.3em;text-transform:uppercase;color:#9a7a2b}
+h1{font-weight:600;font-size:34px;line-height:1.1;margin:6px 0 4px}
+.sub{font-style:italic;color:#4a5162;margin:0 0 18px}
+.video{position:relative;padding-top:56.25%;background:#1d2136;border:1px solid #d9b55a;border-radius:6px;overflow:hidden}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.soon{position:absolute;inset:0;display:grid;place-items:center;color:#f3e7c8;text-align:center;padding:24px;font-size:18px}
+.soon b{display:block;font-size:22px;margin-bottom:6px}
+.btn{display:inline-block;margin:18px 8px 0 0;padding:12px 18px;background:#8c1d2a;color:#fff;text-decoration:none;border-radius:4px;font:600 13px/1 Montserrat,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.btn.o{background:transparent;color:#8c1d2a;border:1px solid #8c1d2a}
+.rule{height:1px;background:linear-gradient(90deg,#d9b55a,transparent);margin:26px 0 18px}
+.small{font-size:14px;color:#4a5162}
+a{color:#8c1d2a}
+</style></head><body><div class="wrap">
+<div class="eyebrow">The Concert Pianist Series · Book 1 · EC20</div>
+<h1>I Saw Three Ships</h1>
+<p class="sub">from <i>Easy Christmas Piano for Adults — 30 Favorite Carols for Beginners</i> — arranged &amp; performed by Dr. Maria Pisarenko</p>
+<div class="video" id="v"><div class="soon"><div><b>The video for this carol is being recorded.</b>Come back in a few days — or subscribe on YouTube to be told when it is up.</div></div></div>
+<a class="btn" href="https://www.youtube.com/@DrMariaPisarenko?sub_confirmation=1">Subscribe on YouTube</a>
+<a class="btn o" href="/books/">All books &amp; videos</a>
+<div class="rule"></div>
+<p class="small">Scan the code on any page of the book to watch that carol. The arrangement in the book is the one you hear: score and both hands on screen, at a tempo you can follow. Questions or a wrong note spotted? <a href="mailto:masha@mariapisarenko.com">Write to me</a>.</p>
+</div>
+<script>
+fetch('/books/videos.json').then(r=>r.json()).then(d=>{const id=d['ec20'];if(id){document.getElementById('v').innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';}}).catch(()=>{});
+</script></body></html>
